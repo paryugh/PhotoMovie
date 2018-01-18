@@ -18,6 +18,7 @@ void setup(){
 }
 
 void draw(){
+  println(frameRate);
   fill(0, 70);
   rect(0, 0, width, height);
   ArrayList<Particle> nextParticles = new ArrayList<Particle>();
@@ -33,5 +34,5 @@ void draw(){
     particles.add(new Particle());
   }
   
-  rect(width/2, height/2, 50, 50);
+  //rect(width/2, height/2, 50, 50);
 }

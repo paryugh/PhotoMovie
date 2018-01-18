@@ -1,7 +1,7 @@
 
 class Picture{
   
-  PImage image;
+  PImage image = loadImage("図1.png");
   int MIN_WIDTH = 50;
   int MAX_WIDTH = 100;
   
