@@ -1,3 +1,12 @@
+/***
+ * スライドショー
+ * TODO:ユーザ設定の追加
+ *      →画面サイズ（解像度）
+ *      →写真の場所
+ *      →写真フレームの指定
+ *      →写真の大きさ設定
+ ***/
+
 Background bg;
 
 void setup()
@@ -10,53 +19,33 @@ void setup()
 void draw()
 {
   println(frameRate);
+  // 背景の描画
   bg.display();
   bg.update();
+  
+  // 写真の追加
+  
 }
 
-class Background
+class Photo
 {
-  PImage img1;
-  PImage img2;
-  float img1X = 0.0;
-  float img1Y = 0.0;
-  float img2X = 0.0;
-  float img2Y = 0.0;
-  
-  // コンストラクタ
-  Background()
+  // 縦横比はある程度ランダムにしたいな。
+  PImage p;
+  int photoX;
+  int photoY;
+  int photoW;
+  int photoH;
+  Photo(String filename)
   {
-    // 背景画像１の読み込み
-    img1 = loadImage("bluegradation.png");
-    int ratio = img1.width / width;
-    int imgheight = img1.height * ratio;
-    img1.resize(width, imgheight);
-    
-    // 背景画像２の読み込み
-    img2 = loadImage("bluegradation.png");
-    img2.resize(width, imgheight);
-    
-    img2Y = img1.height;
+    p = loadImage(filename);
   }
   
   void display()
   {
-    image(img1, img1X, img1Y);
-    image(img2, img2X, img2Y);
+    image(p, 0, 0);
   }
   
   void update()
   {
-    img1Y --;
-    img2Y --;
-    // imgY が自分の高さ分のマイナスになると、もう一つのimgの高さのところに行く
-    if(img1Y < -img1.height)
-    {
-      img1Y = img2Y + img2.height;
-    }
-    if(img2Y < -img2.height)
-    {
-      img2Y = img1Y + img1.height;
-    }
   }
 }

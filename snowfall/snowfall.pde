@@ -5,7 +5,7 @@
 * @date 2016/08/16
 */
 
-float SNOW_FALL = 1.0/10.0; // sekisetsuryo
+float SNOW_FALL = 1.0/10.0; // 積雪量
 
 ArrayList<Particle> particles;
 ArrayList<Picture> picture;
