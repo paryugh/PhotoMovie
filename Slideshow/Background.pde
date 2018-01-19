@@ -1,5 +1,6 @@
 /*** 
  * 背景を描画するクラス
+ * TODO:背景画像が画面の高さに満たない場合は、読み込む背景数を増やす。→背景画像は配列に。
  * TODO:背景画像が縦長なら縦スクロール、横長なら横スクロールとする。
  * TODO:縦・横スクロールは設定もできるようにする。（空白, 縦, 横）
  ***/
@@ -17,7 +18,7 @@ class Background
   {
     // 背景画像１の読み込み
     img1 = loadImage("bluegradation.png");
-    int ratio = img1.width / width;
+    int ratio = width / img1.width;
     int imgheight = img1.height * ratio;
     img1.resize(width, imgheight);
     
