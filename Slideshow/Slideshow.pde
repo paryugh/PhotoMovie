@@ -9,81 +9,101 @@
  ***/
 
 Background bg;
-Photo ph;
+ArrayList<Photo> photoList;
+ArrayList<String> photoFileList;
+int photoCounter;
+
+String[] extensions = { //操作したいファイルの拡張子を登録
+  ".jpg", ".gif", ".tga", ".png"
+};
+
+boolean isStart = false;
 int speed;
 
 void setup()
 {
-  size(640,400);
-  background(0,0,0);
+  /***** 画面設定 ここから *****/
+  size(640, 400);
+  background(0, 0, 0);
+  /***** 画面設定 ここまで *****/
+
+  /***** 変数の初期化 ここから *****/
   bg = new Background();
-  ph = new Photo("写真1.png");
+  photoList = new ArrayList<Photo>();
+  photoFileList = new ArrayList<String>();
+  
+  photoCounter = 0;
+  /***** 変数の初期化 ここまで *****/
+
+  //photoList.add(new Photo("写真1.png"));
+  selectFolder("ファイルを指定してください", "loadImages");
 }
 
 void draw()
 {
-  println(frameRate);
-  // 背景の描画
-  bg.display();
-  bg.update();
-  
-  // 写真の追加
-  ph.display();
-  ph.update();
-  if(ph.isGoneOut())
+  //println(frameRate);
+  if (isStart)
   {
-    ph = new Photo("写真2.png");
+    // 背景の描画
+    bg.display();
+    bg.update();
+
+    // 表示されている写真がなければ表示する！
+    if (photoList.size() < 1 )
+    {
+      addPhoto();
+    }
+
+    for ( int i=0; i<photoList.size(); i++ )
+    {
+      Photo ph = photoList.get(i);
+      ph.display();
+      ph.update();
+      if (ph.isInDisplay())
+      {
+        addPhoto();
+      }
+      if (ph.isGoneOut())
+      {
+        ph = null;
+        photoList.remove(ph);
+      }
+    }
+  } else 
+  {
+    // ロード画面を表示する。
   }
 }
 
-class Photo
+void loadImages(File selection)
 {
-  // TODO:縦横比はある程度ランダムに
-  // TODO:縦スクロールの場合は横幅調整、横スクロールの場合は縦幅調整
-  PImage photo; // 写真画像
-  PImage frame; // 写真のフレーム画像
-  int photoX;
-  int photoY;
-  int photoW = width / 2;
-  int photoH;
-  
-  boolean goOut;
-  
-  Photo(String filename)
-  {
-    photo = loadImage(filename);
-    int ratio = photoW / photo.width;
-    photoH = photo.height * ratio;
-    photo.resize(photoW, photoH);
-    
-    float minX = 0.0;
-    float maxX = width - photo.width;
-    photoX = (int)random(minX, maxX);
-    photoY = height;
-    
-    goOut = false;
-    
-    // フレーム画像の読み込み
-    // フレーム画像は設定されている場合のみ
-  }
-  
-  void display()
-  {
-    image(photo, photoX, photoY);
-  }
-  
-  void update()
-  {
-    photoY--;
-    println("photoH:"+photoH);
-    if(photoY < -photoH)
-    {
-      goOut = true;
+  File[] files = selection.listFiles();
+  // 以下、各ファイルについて操作を行う
+  for (int i = 0; i < files.length; i++) {
+    for (String extension : extensions) {
+      if (files[i].getPath().endsWith(extension)) { //ファイル名の末尾が拡張子と一致するか
+        photoFileList.add(files[i].getAbsolutePath()); // 絶対パスを格納
+      }
     }
   }
-  
-  boolean isGoneOut()
+  isStart = true;
+}
+
+/*****
+ * 写真を新しく追加する。
+ *****/
+boolean addPhoto()
+{
+  if( photoCounter < photoFileList.size() )
   {
-    return goOut;
+    String photoFileName = photoFileList.get(photoCounter);
+    photoList.add(new Photo(photoFileName));
+    photoCounter++;
+    return true;
+  }
+  else
+  {
+    //println("追加するフォトがありません。");
+    return false;
   }
 }
