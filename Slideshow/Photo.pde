@@ -5,18 +5,20 @@ class Photo
   // TODO:縦スクロールの場合は横幅調整、横スクロールの場合は縦幅調整
   PImage photo; // 写真画像
   PImage frame; // 写真のフレーム画像
-  int photoX;
-  int photoY;
-  int photoW = width / 2;
-  int photoH;
-  int photoSpace = 50;
-  
+  float photoX;
+  float photoY;
+  float photoW = width / 2;
+  float photoH;
+  float photoSpace = 50;
+
   boolean goOut;
-  
+  boolean goIn;
+  boolean isNextPhotoDisplaied;
+
   Photo(String filename)
   {
     photo = loadImage(filename);
-    int ratio = photoW / photo.width;
+    float ratio = photoW / photo.width;
     photoH = photo.height * ratio;
     println("==========");
     println("W"+photoW);
@@ -25,49 +27,58 @@ class Photo
     println(photo.height);
     println(ratio);
     println("==========");
-    photo.resize(photoW, photoH);
-    
+    photo.resize((int)photoW, (int)photoH);
+
     float minX = 0.0;
     float maxX = width - photo.width;
-    photoX = (int)random(minX, maxX);
+    photoX = random(minX, maxX);
     photoY = height;
-    
+
     goOut = false;
-    
+    goIn = false;
+    isNextPhotoDisplaied = false;
+
     // フレーム画像の読み込み
     // フレーム画像は設定されている場合のみ
   }
-  
+
   void display()
   {
     image(photo, photoX, photoY);
   }
-  
+
   void update()
   {
     photoY--;
-    if(photoY < -photoH)
+    if (photoY < -photoH)
     {
       goOut = true;
     }
+    if (photoY < height - photoH - photoSpace)
+    {
+      goIn = true;
+    }
   }
-  
+
   boolean isGoneOut()
   {
     return goOut;
   }
-  
+
   /*****
    * 画像が枠内に入っていれば true 
    * それ以外は false
    * 写真間隔が指定されていれば、それも考慮する。
    *****/
-  boolean isInDisplay()
+  boolean isDisplayNextPhoto()
   {
-    if(photoY > photoH + photoSpace)
+    if( !isNextPhotoDisplaied )
     {
-      return true;
+      return goIn;
     }
-    return false;
+    else
+    {
+      return false;
+    }
   }
 }

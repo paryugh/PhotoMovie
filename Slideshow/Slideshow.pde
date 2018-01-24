@@ -59,9 +59,12 @@ void draw()
       Photo ph = photoList.get(i);
       ph.display();
       ph.update();
-      if (ph.isInDisplay())
+      if (ph.isDisplayNextPhoto())
       {
         addPhoto();
+        // 追加するフォトがなくなり、最後のフォトもフェードアウトしたらプログラム終了！
+        
+        ph.isNextPhotoDisplaied = true;
       }
       if (ph.isGoneOut())
       {
