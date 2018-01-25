@@ -8,12 +8,16 @@
  * TODO:向き設定→上下左右
  ***/
 
+import java.io.*;
+
 Background bg;
 ArrayList<Photo> photoList;
 ArrayList<String> photoFileList;
 int photoCounter;
 
-String[] extensions = { //操作したいファイルの拡張子を登録
+String imgDirectoryPath = "C:\\Users\\fj0170hx\\Documents\\Processing\\PhotoMovie\\Slideshow\\data\\写真";
+// 対応している拡張子
+String[] extensions = { 
   ".jpg", ".gif", ".tga", ".png"
 };
 
@@ -31,12 +35,12 @@ void setup()
   bg = new Background();
   photoList = new ArrayList<Photo>();
   photoFileList = new ArrayList<String>();
-  
+
   photoCounter = 0;
   /***** 変数の初期化 ここまで *****/
 
-  //photoList.add(new Photo("写真1.png"));
-  selectFolder("ファイルを指定してください", "loadImages");
+  // 画像ディレクトリの読み込み
+  loadImageFiles(imgDirectoryPath);
 }
 
 void draw()
@@ -61,31 +65,47 @@ void draw()
       ph.update();
       if (ph.isDisplayNextPhoto())
       {
-        addPhoto();
-        // 追加するフォトがなくなり、最後のフォトもフェードアウトしたらプログラム終了！
-        
-        ph.isNextPhotoDisplaied = true;
+        if (addPhoto())
+          ph.isNextPhotoDisplaied = true;
       }
       if (ph.isGoneOut())
       {
-        ph = null;
-        photoList.remove(ph);
+        if (ph.isNextPhotoDisplaied)
+        {
+          ph = null;
+          photoList.remove(ph);
+        } else
+        {
+          // 終了
+          ph = null;
+          photoList.remove(ph);
+          delay(1000);
+          exit();
+        }
       }
     }
   } else 
   {
-    // ロード画面を表示する。
+    // TODO:ロード画面を表示する。
   }
 }
 
-void loadImages(File selection)
+/*****
+ * 画像
+ *****/
+void loadImageFiles(String imgDirectoryPath)
 {
-  File[] files = selection.listFiles();
+  File imgDirectory = new File(imgDirectoryPath);
+  File[] fileArray = imgDirectory.listFiles();
   // 以下、各ファイルについて操作を行う
-  for (int i = 0; i < files.length; i++) {
+  for (int i = 0; i < fileArray.length; i++) {
     for (String extension : extensions) {
-      if (files[i].getPath().endsWith(extension)) { //ファイル名の末尾が拡張子と一致するか
-        photoFileList.add(files[i].getAbsolutePath()); // 絶対パスを格納
+      {
+        String fileName = fileArray[i].getAbsolutePath();
+        if (fileName.endsWith(extension)) {
+          println(fileName);
+          photoFileList.add(fileName);
+        }
       }
     }
   }
@@ -97,14 +117,13 @@ void loadImages(File selection)
  *****/
 boolean addPhoto()
 {
-  if( photoCounter < photoFileList.size() )
+  if ( photoCounter < photoFileList.size() )
   {
     String photoFileName = photoFileList.get(photoCounter);
     photoList.add(new Photo(photoFileName));
     photoCounter++;
     return true;
-  }
-  else
+  } else
   {
     //println("追加するフォトがありません。");
     return false;
