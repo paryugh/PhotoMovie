@@ -4,6 +4,8 @@ class Photo
   // TODO:縦横比はある程度ランダムに
   // TODO:縦スクロールの場合は横幅調整、横スクロールの場合は縦幅調整
   // TODO:もし、写真が拡大される場合は原寸表示する。
+  // TODO:フレーム画像を読み込む。
+  // TODO:フレーム画像は複数あってもいいかも？
   PImage photo; // 写真画像
   PImage frame; // 写真のフレーム画像
   float photoX;

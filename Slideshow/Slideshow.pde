@@ -23,6 +23,7 @@ String[] extensions = {
 
 boolean isStart = false;
 int speed;
+int scrollMode = 2; // 1:下、2:右、3:上、4:左
 
 void setup()
 {
@@ -32,7 +33,7 @@ void setup()
   /***** 画面設定 ここまで *****/
 
   /***** 変数の初期化 ここから *****/
-  bg = new Background();
+  bg = new Background("winter_vect-5-3.png", scrollMode);
   photoList = new ArrayList<Photo>();
   photoFileList = new ArrayList<String>();
 
@@ -86,7 +87,7 @@ void draw()
     }
   } else 
   {
-    // TODO:ロード画面を表示する。
+    // TODO:ロード画面を表示する。→そのために、画像読み込みは別スレッド？
   }
 }
 
