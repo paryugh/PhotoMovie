@@ -6,6 +6,7 @@
  *      →写真フレームの指定
  *      →写真の大きさ設定
  * TODO:向き設定→上下左右
+ * TOTO:写真の読み込み順を時系列順にする。
  ***/
 
 import java.io.*;
@@ -121,7 +122,7 @@ boolean addPhoto()
   if ( photoCounter < photoFileList.size() )
   {
     String photoFileName = photoFileList.get(photoCounter);
-    photoList.add(new Photo(photoFileName));
+    photoList.add(new Photo(photoFileName, scrollMode));
     photoCounter++;
     return true;
   } else
