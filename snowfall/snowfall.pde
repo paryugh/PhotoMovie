@@ -21,18 +21,23 @@ void draw(){
   println(frameRate);
   fill(0, 70);
   rect(0, 0, width, height);
-  ArrayList<Particle> nextParticles = new ArrayList<Particle>();
+  //ArrayList<Particle> nextParticles = new ArrayList<Particle>();
   for(Particle p: particles){
     p.display();
     p.update();
-    if(!p.isGoneOut()){
-      nextParticles.add(p);
-    }
+    //if(!p.isGoneOut()){
+    //  nextParticles.add(p);
+    //}
   }
-  particles = nextParticles;
-  if(random(1) < SNOW_FALL){
-    particles.add(new Particle());
-  }
+  //particles = nextParticles;
+  //if(random(1) < SNOW_FALL){
+  //  particles.add(new Particle());
+  //}
   
   //rect(width/2, height/2, 50, 50);
+}
+
+void mouseClicked()
+{
+  particles.add(new Particle());
 }
