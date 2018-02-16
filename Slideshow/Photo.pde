@@ -3,16 +3,17 @@ class Photo
 {
   // TODO:縦横比はある程度ランダムに
   // TODO:縦スクロールの場合は横幅調整、横スクロールの場合は縦幅調整
-  // TODO:もし、写真が拡大される場合は原寸表示する。
-  // TODO:フレーム画像を読み込む。
   // TODO:フレーム画像は複数あってもいいかも？
+  // TODO:メッセージを追加
   PImage photo; // 写真画像
-  PImage frame; // 写真のフレーム画像
+  PImage frame = null; // 写真のフレーム画像
   float photoX;
   float photoY;
   float photoW;
   float photoH;
-  float photoSpace = 50;
+  float photoSpaceW = 50;
+  float photoSpaceH = 100; // 高さ TODO:高さに合わせて写真サイズ・メッセージサイズを変える？
+  boolean isRandom = false; // 写真の高さがランダムかどうか
   float photoSizeRaito = 2.0/3.0;
 
   int scrollMode = 1;
@@ -21,16 +22,37 @@ class Photo
   boolean goIn;
   boolean isNextPhotoDisplaied;
 
+  String message = "";
+  float messageSize = 50;
+  int fontsize = 28;
+
   Photo(String filename, int _scrollMode)
   {
     photo = loadImage(filename);
-    
+
     scrollMode = _scrollMode;
 
     init();
 
     // フレーム画像の読み込み
     // フレーム画像は設定されている場合のみ
+  }
+
+  Photo(String filename, String photoFrame, int _scrollMode)
+  {
+    this(filename, _scrollMode);
+    // フレームの読み込み
+    if (!photoFrame.isEmpty())
+    {
+      frame = loadImage(photoFrame);
+      frame.resize((int)photoW, (int)photoH);
+    }
+  }
+
+  Photo(String filename, String photoFrame, int _scrollMode, String _message)
+  {
+    this(filename, photoFrame, _scrollMode);
+    message = _message;
   }
 
   // 初期化処理
@@ -64,14 +86,6 @@ class Photo
         photoH = (float)photo.height;
       ratio = photoH / (float)photo.height;
       photoW = (float)photo.width * ratio;
-    println("==========");
-    println("photoraito"+photoSizeRaito);
-    println("W"+photoW);
-    println("H"+photoH);
-    println(photo.width);
-    println(photo.height);
-    println(ratio);
-    println("==========");
       photo.resize((int)photoW, (int)photoH);
 
       min = 0.0;
@@ -84,6 +98,14 @@ class Photo
     default:
       break;
     }
+    println("==========");
+    println("photoraito"+photoSizeRaito);
+    println("W"+photoW);
+    println("H"+photoH);
+    println(photo.width);
+    println(photo.height);
+    println(ratio);
+    println("==========");
 
     // その他初期化処理
     goOut = false;
@@ -95,6 +117,17 @@ class Photo
   void display()
   {
     image(photo, photoX, photoY);
+    if (frame!=null)
+      image(frame, photoX, photoY);
+    if (!message.isEmpty())
+    {
+      fill(0);
+      rect(photoX, photoY + photo.height, photo.width, messageSize);
+      textSize(32);
+      fill(0, 102, 153);
+      textFont(mono);
+      text(message, photoX, photoY + photo.height, photoX + photo.width, photoY + messageSize);
+    }
   }
 
   // 写真を動かすメソッド
@@ -103,23 +136,23 @@ class Photo
     switch(scrollMode)
     {
     case 1 :
-      photoY--;
+      photoY -= speed;
       if (photoY < -photoH)
       {
         goOut = true;
       }
-      if (photoY < height - photoH - photoSpace)
+      if (photoY < height - photoH - photoSpaceW)
       {
         goIn = true;
       }
       break;
     case 2 :
-      photoX--;
+      photoX -= speed;
       if (photoX < -photoW)
       {
         goOut = true;
       }
-      if (photoX < width - photoW - photoSpace)
+      if (photoX < width - photoW - photoSpaceW)
       {
         goIn = true;
       }

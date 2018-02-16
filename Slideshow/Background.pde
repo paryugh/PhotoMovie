@@ -1,8 +1,8 @@
 /*** 
  * 背景を描画するクラス
  * TODO:背景画像が画面の高さに満たない場合は、読み込む背景数を増やす。→背景画像は配列に。
- * TODO:背景画像が縦長なら縦スクロール、横長なら横スクロールとする。
- * TODO:縦・横スクロールは設定もできるようにする。（空白, 縦, 横）
+ * TODO:縦・横スクロールは設定もできるようにする。（1:下、2:右、3:上、4:左）
+ * TODO:スピードは横・縦幅からの割合にする。
  ***/
 class Background
 {
@@ -77,8 +77,8 @@ class Background
     switch(scrollMode)
     {
     case 1 :
-      img1Y --;
-      img2Y --;
+      img1Y -= speed;
+      img2Y -= speed;
       // imgY が自分の高さ分のマイナスになると、もう一つのimgの高さのところに行く
       if (img1Y < -img1.height)
       {
@@ -90,8 +90,8 @@ class Background
       }
       break;
     case 2 :
-      img1X --;
-      img2X --;
+      img1X -= speed;
+      img2X -= speed;
       // imgY が自分の高さ分のマイナスになると、もう一つのimgの高さのところに行く
       if (img1X < -img1.width)
       {
