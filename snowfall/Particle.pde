@@ -1,9 +1,9 @@
-float MIN_PARTICLE_DIAMETER = 70;
-float MAX_PARTICLE_DIAMETER = 100;
-float MAX_PARTICLE_VELOCITY_X = 0.5;
+float MIN_PARTICLE_DIAMETER = 700;
+float MAX_PARTICLE_DIAMETER = 900;
+float MAX_PARTICLE_VELOCITY_X = 1.0;
 float MAX_PARTICLE_VEL_VARIANT_X = 0.1;
-float MAX_PARTICLE_VELOCITY_Y = 1.0;
-float MAX_PARTICLE_VEL_VARIANT_Y = 0.1;
+float MAX_PARTICLE_VELOCITY_Y = 2.0;
+float MAX_PARTICLE_VEL_VARIANT_Y = 2.0;
 //float MAX_BLINK_SPEED = PI / 128.0;
 
 class Particle{
@@ -14,11 +14,13 @@ class Particle{
   Particle(){
     loc = new PVector(random(width), height + MAX_PARTICLE_DIAMETER / 2);
     vel = new PVector(random(-MAX_PARTICLE_VELOCITY_X, MAX_PARTICLE_VELOCITY_X), random(MAX_PARTICLE_VELOCITY_Y));
-    blinkAngle = random(100);
+    blinkAngle = random(0.0, 1.0);
+    
+    println(width + ":" + MIN_PARTICLE_DIAMETER + "," + MAX_PARTICLE_DIAMETER);
   }
   
   void display(){
-    float diameter = map(sin(blinkAngle), -1, 1, MIN_PARTICLE_DIAMETER, MAX_PARTICLE_DIAMETER);
+    float diameter = map(sin(blinkAngle), 0, 1, MIN_PARTICLE_DIAMETER, MAX_PARTICLE_DIAMETER);
     //for(float v = 1.0; v >= 0.0; v -= 0.2){
       float v = 1.0;
       float d = map(v, 0, 1, 0, diameter);
@@ -33,7 +35,7 @@ class Particle{
   void update(){
     vel.x += random(-MAX_PARTICLE_VEL_VARIANT_X, MAX_PARTICLE_VEL_VARIANT_X);
     vel.x = constrain(vel.x, -MAX_PARTICLE_VELOCITY_X, MAX_PARTICLE_VELOCITY_X);
-    vel.y += random(-MAX_PARTICLE_VEL_VARIANT_Y, MAX_PARTICLE_VEL_VARIANT_Y);
+    vel.y += MAX_PARTICLE_VELOCITY_Y; //random(-MAX_PARTICLE_VEL_VARIANT_Y, MAX_PARTICLE_VEL_VARIANT_Y);
     vel.y = constrain(vel.y, 0, MAX_PARTICLE_VELOCITY_Y);
     // 上へ
     loc.sub(vel);
