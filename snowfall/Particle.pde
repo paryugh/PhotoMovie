@@ -8,7 +8,7 @@ float MAX_PARTICLE_VEL_VARIANT_Y = 2.0;
 
 class Particle {
 
-  PVector loc, vel;
+  PVector loc, vel, textVec;
   float blinkAngle;
 
 
@@ -19,6 +19,8 @@ class Particle {
 
 
     println(width + ":" + MIN_PARTICLE_DIAMETER + "," + MAX_PARTICLE_DIAMETER);
+    println(loc.x + "," + loc.y);
+    println(vel.x + "," + vel.y);
   }
 
   void display() {
@@ -41,11 +43,14 @@ class Particle {
     float rectPosition = (d - rectSize) / 2.0;
     float rextX = loc.x - d/2.0 + rectPosition;
     float textY = loc.y - d/2.0 + rectPosition;
-    println("z:"+rextX+","+textY);
+    //println("z:"+rextX+","+textY);
     fill(255);
     textFont(mono, textSize);
-    textAlign(CENTER, CENTER);
+    textAlign(LEFT, CENTER);
     text("hogehoge", rextX, textY);
+    noFill();
+    stroke(255);
+    rect(rextX, textY, rectSize, rectSize);
     for (int i=0; i<multiLineText.length; i++)
     {
       textY += textSize;

@@ -24,14 +24,16 @@ void setup() {
 void draw() {
   textFont(mono, 12);
   fill(255);
-  text(frameRate, 10, 10);
+  textAlign(RIGHT, CENTER);
+  text(frameRate, 100, 10);
   //println(frameRate);
   fill(0, 70);
   rect(0, 0, width, height);
   //ArrayList<Particle> nextParticles = new ArrayList<Particle>();
   for (Particle p : particles) {
     p.display();
-    p.update();
+    if(flag)
+      p.update();
     //if(!p.isGoneOut()){
     //  nextParticles.add(p);
     //}
@@ -47,4 +49,17 @@ void draw() {
 void mouseClicked()
 {
   particles.add(new Particle());
+}
+
+boolean flag = true;
+void keyPressed()
+{
+  if(flag)
+  {
+    flag = false;
+  }
+  else
+  {
+    flag = true;
+  }
 }
